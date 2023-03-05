@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 17:50:10 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:51:00 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/05 20:14:18 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 static void	philoprocess(int id, t_args *pack)
 {
@@ -40,7 +41,7 @@ static void	*philos_allate_monitor(void *vpack)
 		sem_wait(pack->allate);
 		if (pack->willexit)
 			while (1)
-				pause();
+				usleep(10000);
 	}
 	pack->willexit = 1;
 	sem_post(pack->philo_died);
