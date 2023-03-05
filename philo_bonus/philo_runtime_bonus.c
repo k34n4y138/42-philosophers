@@ -6,13 +6,12 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 17:22:33 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:43:19 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/05 18:50:53 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <stdio.h>
-
 
 long	announce_state(t_philo *philo, char *state, int is_death)
 {

@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:50:17 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:27:22 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/05 18:51:14 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <semaphore.h>
-#include <sys/semaphore.h>
 
 int	initargs(char *av[], t_args *pack, int ac)
 {

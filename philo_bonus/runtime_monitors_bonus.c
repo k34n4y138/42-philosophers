@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 17:50:10 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:34:08 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/05 18:51:00 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/semaphore.h>
 
 static void	philoprocess(int id, t_args *pack)
 {
