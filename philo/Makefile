@@ -11,6 +11,9 @@ M_TARGET = philo
 
 all: $(NAME)
 
+%.o:%.c
+	$(CC) $(CFLAG) $^ -c -o $@
+
 $(NAME): $(M_TARGET)
 
 $(M_TARGET): $(M_OBJ)
