@@ -6,24 +6,24 @@
 #    By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/01 17:48:41 by zmoumen           #+#    #+#              #
-#    Updated: 2023/03/05 17:58:36 by zmoumen          ###   ########.fr        #
+#    Updated: 2023/03/06 15:25:44 by zmoumen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAG = -Wall -Werror -Wextra
 
-M_SRC = main_bonus.c tools_bonus.c cleanup_bonus.c philo_runtime_bonus.c runtime_monitors_bonus.c
-M_HDRS = philo_bonus.h
-M_OBJ = $(patsubst %.c, %.o, $(M_SRC))
+B_SRC = main_bonus.c tools_bonus.c cleanup_bonus.c philo_runtime_bonus.c runtime_monitors_bonus.c
+B_HDRS = philo_bonus.h
+B_OBJ = $(patsubst %.c, %.o, $(M_SRC))
 
 NAME = philosophers
 
-M_TARGET = philo_bonus
+B_TARGET = philo_bonus
 
 all: $(NAME)
 
-%.o:%.c
+%.o:%.c $(B_HDRS)
 	$(CC) $(CFLAG) $^ -c -o $@
 
 $(NAME): $(M_TARGET)

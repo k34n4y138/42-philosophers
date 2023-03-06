@@ -11,7 +11,7 @@ M_TARGET = philo
 
 all: $(NAME)
 
-%.o:%.c
+%.o:%.c $(M_HDRS)
 	$(CC) $(CFLAG) $^ -c -o $@
 
 $(NAME): $(M_TARGET)
