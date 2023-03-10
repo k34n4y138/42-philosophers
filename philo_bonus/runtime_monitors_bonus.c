@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 17:50:10 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 20:14:18 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/10 15:33:08 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	simulation_spinup(t_args *pack)
 	while (id < pack->num_of_philos)
 	{
 		child = fork();
-		if (child > 0)
+		if (!child)
 		{
 			philoprocess(id + 1, pack);
 			exit(0);
