@@ -6,11 +6,13 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:22:27 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 14:58:17 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:35:48 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -59,13 +61,21 @@ t_philo	*gen_philosophers(t_args	*args, int numofphilos)
 	return (philos);
 }
 
-void	spawn_philos(t_philo *philos, int numofphilos)
+int	spawn_philos(t_philo *philos, int numofphilos)
 {
 	philos->args->timeorigin = get_ms_time(0);
 	while (numofphilos--)
 	{
-		pthread_create(&philos->ptid, NULL, philo_job, philos);
+		philos->last_meal = get_ms_time(0);
+		if (pthread_create(&philos->ptid, NULL, philo_job, philos))
+		{
+			gs_simulation_state(philos->args, 1);
+			announce_state(philos, "COULDN'T BE CREATED!!!", 1);
+			philos->args->num_of_philos -= numofphilos + 1;
+			return (0);
+		}
 		philos = philos->neighbor;
 	}
 	usleep(100);
+	return (1);
 }

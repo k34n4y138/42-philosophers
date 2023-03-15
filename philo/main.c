@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:40:43 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 15:05:52 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:27:20 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	main(int ac, char **av)
 		return (ac - 1);
 	}
 	philos = gen_philosophers(&pack, pack.num_of_philos);
-	spawn_philos(philos, pack.num_of_philos);
-	monitor_philos(philos);
+	if (spawn_philos(philos, pack.num_of_philos))
+		monitor_philos(philos);
 	winddown_philos(philos, pack.num_of_philos);
 	free(philos);
 	philos = NULL;
