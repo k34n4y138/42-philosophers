@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:35:49 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 15:02:38 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:29:13 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	monitor_philos(t_philo *philo)
 	{
 		if (philo->id == 1)
 			philos_ate = 0;
-		if (g_philo_timesate(philo) >= philo->args->times_to_eat)
+		if (g_philo_timesate(philo, 0) >= philo->args->times_to_eat)
 			philos_ate++;
 		if (philos_ate == philo->args->num_of_philos)
 		{

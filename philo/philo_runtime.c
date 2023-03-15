@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:30:12 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 15:02:34 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:14:49 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	philo_eat(t_philo *philo)
 	announce_state(philo, "has taken a fork", 0);
 	philo_mealtimer(philo, 1, announce_state(philo, "is eating", 0));
 	mssleep(philo->args->time_to_eat);
+	g_philo_timesate(philo, 1);
 	pthread_mutex_unlock(philo->fst_fork);
 	pthread_mutex_unlock(philo->lst_fork);
 	philo->state = PHILO_WILLSLEEP;
@@ -46,7 +47,6 @@ void	*philo_job(void	*vphilo)
 	t_philo	*philo;
 
 	philo = (t_philo *)vphilo;
-	philo->last_meal = get_ms_time(0);
 	if (philo->id % 2)
 	{
 		philo->fst_fork = &philo->neighbor->fork;

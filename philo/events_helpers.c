@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:31:09 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 15:04:02 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:40:37 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ long	announce_state(t_philo *philo, char *state, int is_death)
 	return (eventstamp);
 }
 
-int	g_philo_timesate(t_philo *philo)
+int	g_philo_timesate(t_philo *philo, int set)
 {
 	int	ret;
 
 	pthread_mutex_lock(&philo->meal_meta_mtx);
+	if (set)
+		philo->times_ate++;
 	ret = philo->times_ate;
 	pthread_mutex_unlock(&philo->meal_meta_mtx);
 	return (ret);
@@ -70,7 +72,6 @@ long	philo_mealtimer(t_philo *philo, int set, long newval)
 	if (set)
 	{
 		philo->last_meal = newval;
-		philo->times_ate++;
 	}
 	ret = philo->last_meal;
 	pthread_mutex_unlock(&philo->meal_meta_mtx);

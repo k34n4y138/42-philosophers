@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:40:56 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/02/24 15:05:13 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 19:27:34 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*ft_calloc(int size, int count);
 */
 int		initargs(char *av[], t_args *pack, int ac);
 t_philo	*gen_philosophers(t_args	*args, int numofphilos);
-void	spawn_philos(t_philo *philos, int numofphilos);
+int		spawn_philos(t_philo *philos, int numofphilos);
 /**/
 
 /*
@@ -83,7 +83,7 @@ void	*philo_job(void	*vphilo);
 long	get_ms_time(long origin);
 void	mssleep(long ms);
 long	announce_state(t_philo *philo, char *state, int is_death);
-int		g_philo_timesate(t_philo *philo);
+int		g_philo_timesate(t_philo *philo, int set);
 long	philo_mealtimer(t_philo *philo, int set, long newval);
 /**/
 
