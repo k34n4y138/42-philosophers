@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:50:52 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 17:56:56 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 20:24:26 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <semaphore.h>
-# define PRINTFGUARD	"/printfsem"
-# define FORKSGUARD	"/forksem"
-# define ALLATESEM	"/allatesem"
-# define PHILODIEDSEM	"/philodiedsem"
+# define PRINTFGUARD	"/philo_printfsem"
+# define FORKSGUARD	"/philo_forksem"
+# define ALLATESEM	"/philo_allatesem"
+# define PHILODIEDSEM	"/philo_philodiedsem"
+# define STARTSIM	"/philo_startsim"
+# define INNERSEMPRFX "/philo_meta_"
+# define ENDITALLSEM	"/philo_will_exit"
 # define MAXPHILOS	6942
 
 typedef struct s_args
@@ -33,6 +36,8 @@ typedef struct s_args
 	pid_t			philopids[MAXPHILOS];
 	sem_t			*printfsem;
 	sem_t			*allate;
+	sem_t			*startsim;
+	sem_t			*enditallsem;
 	sem_t			*forks;
 	sem_t			*philo_died;
 }		t_args;
@@ -48,32 +53,42 @@ typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
+	char				innersemname[128];
 	pthread_t			ptid;
 	t_args				*args;
 	t_philostate		state;
 	long				last_meal;
-	pthread_mutex_t		meal_meta_mtx;
+	sem_t				*meal_meta_sem;
 	long				times_ate;
 }	t_philo;
 
 /*
-	tools.c
+	tools
 */
 int		ft_atoi(char *str);
 void	*ft_calloc(int size, int count);
 long	get_ms_time(long origin);
 void	mssleep(long ms);
-//
+void	simple_itoa(char *bfr, char	*prefix, int num);
 
 /*
-	philo_runtime.c
+	philo_runtime
 */
-void	*monitor_philo(t_philo *vphilo);
 void	*philo_job(void	*vphilo);
+long	announce_state(t_philo *philo, char *state, int is_death);
+long	g_philo_timesate(t_philo *philo, int set);
+long	philo_mealtimer(t_philo *philo, int set, long newval, int cmp);
 
+/*
+	cleanup
+*/
 void	unlink_semaphores(void);
 void	philos_reaper(t_args *pack, int numofphilos, int exitstatus);
-
-void	simulation_spinup(t_args *pack);
+void	trap_till_exit(t_args	*pack, int set);
 void	*seppuku(void *nulled);
+
+/*
+	runtime_monitors
+*/
+void	simulation_spinup(t_args *pack);
 #endif

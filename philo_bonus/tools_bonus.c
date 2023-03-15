@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:19:44 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 17:57:49 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 18:36:08 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,31 @@ void	mssleep(long ms)
 	tosleep = get_ms_time(0);
 	while (tosleep < sleeptill)
 	{
-		usleep(100);
+		usleep(300);
 		tosleep = get_ms_time(0);
 	}	
+}
+
+void	simple_itoa(char bfr[], char	*prefix, int num)
+{
+	int	devider;
+	int	iter;
+	int	lastval;
+
+	devider = 1000000;
+	while (num / devider == 0)
+		devider /= 10;
+	lastval = 0;
+	iter = 0;
+	while (prefix[iter])
+	{
+		bfr[iter] = prefix[iter];
+		iter++;
+	}
+	while (devider && num / devider)
+	{
+		bfr[iter++] = (num / devider) - (lastval * 10) + 48;
+		lastval = num / devider;
+		devider /= 10;
+	}
 }

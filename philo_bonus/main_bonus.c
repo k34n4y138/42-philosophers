@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:50:17 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:51:14 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 18:17:52 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <semaphore.h>
 
 int	initargs(char *av[], t_args *pack, int ac)
 {
@@ -23,10 +22,8 @@ int	initargs(char *av[], t_args *pack, int ac)
 	pack->time_to_die = ft_atoi(av[2]);
 	pack->time_to_eat = ft_atoi(av[3]);
 	pack->time_to_sleep = ft_atoi(av[4]);
-	if (ac == 6)
-		pack->times_to_eat = ft_atoi(av[5]);
-	else
-		pack->times_to_eat = 2147483647;
+	pack->times_to_eat = 2147483647;
+	(ac == 6 && (pack->times_to_eat = ft_atoi(av[5])));
 	if (pack->num_of_philos < 1 || pack->num_of_philos > MAXPHILOS
 		|| pack->time_to_die < 1 || pack->time_to_eat < 1
 		|| pack->time_to_sleep < 1 || pack->times_to_eat < 1)
@@ -36,8 +33,11 @@ int	initargs(char *av[], t_args *pack, int ac)
 			S_IRWXU, pack->num_of_philos);
 	pack->printfsem = sem_open(PRINTFGUARD, O_CREAT | O_EXCL, S_IRWXU, 1);
 	pack->allate = sem_open(ALLATESEM, O_CREAT | O_EXCL, S_IRWXU, 0);
+	pack->startsim = sem_open(STARTSIM, O_CREAT | O_EXCL, S_IRWXU, 0);
 	pack->philo_died = sem_open(PHILODIEDSEM, O_CREAT | O_EXCL, S_IRWXU, 0);
+	pack->enditallsem = sem_open(ENDITALLSEM, O_CREAT | O_EXCL, S_IRWXU, 1);
 	if (pack->printfsem == SEM_FAILED || pack->forks == SEM_FAILED
+		|| pack->startsim == SEM_FAILED || pack->enditallsem == SEM_FAILED
 		|| pack->allate == SEM_FAILED || pack->philo_died == SEM_FAILED)
 		exit(printf("COULND'T CREATE NEEDED SEMAPHORES!\n"));
 	return (0);

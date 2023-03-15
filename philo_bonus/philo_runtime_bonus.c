@@ -6,12 +6,46 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 17:22:33 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/05 18:50:53 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 20:24:07 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <stdio.h>
+#include <unistd.h>
+
+/*
+	https://github.com/google/sanitizers/issues/1384
+	-fsanitize=thread produces false positives that can 
+		only be suppressed by using mutexes
+*/
+
+long	g_philo_timesate(t_philo *philo, int set)
+{
+	long	ret;
+
+	sem_wait(philo->meal_meta_sem);
+	if (set)
+		philo->times_ate++;
+	ret = philo->times_ate;
+	sem_post(philo->meal_meta_sem);
+	return (ret);
+}
+
+long	philo_mealtimer(t_philo *philo, int set, long newval, int cmp)
+{
+	long	ret;
+
+	ret = 0;
+	sem_wait(philo->meal_meta_sem);
+	if (set)
+		philo->last_meal = newval;
+	else if (cmp && get_ms_time(philo->last_meal) >= philo->args->time_to_die)
+		return (0);
+	ret = philo->last_meal;
+	sem_post(philo->meal_meta_sem);
+	return (ret);
+}
 
 long	announce_state(t_philo *philo, char *state, int is_death)
 {
@@ -33,11 +67,12 @@ void	philo_eat(t_philo *philo)
 	announce_state(philo, "has taken a fork", 0);
 	sem_wait(philo->args->forks);
 	announce_state(philo, "has taken a fork", 0);
-	philo->last_meal = announce_state(philo, "is eating", 0);
+	philo_mealtimer(philo, 1,
+		announce_state(philo, "is eating", 0), 0);
 	mssleep(philo->args->time_to_eat);
-	philo->times_ate++;
 	sem_post(philo->args->forks);
 	sem_post(philo->args->forks);
+	g_philo_timesate(philo, 1);
 	philo->state = PHILO_WILLSLEEP;
 }
 
@@ -46,11 +81,11 @@ void	*philo_job(void	*vphilo)
 	t_philo	*philo;
 
 	philo = (t_philo *)vphilo;
-	announce_state(philo, "is thinking", 0);
 	if (philo->id % 2)
 		philo->state = PHILO_WILLEAT;
 	else
 		philo->state = PHILO_WILLSLEEP;
+	sem_wait(philo->args->startsim);
 	while (1)
 	{
 		if (philo->state == PHILO_WILLEAT)
@@ -63,39 +98,4 @@ void	*philo_job(void	*vphilo)
 		}
 	}
 	return (philo);
-}
-
-int	check_philo_died(t_philo *philo)
-{
-	if (get_ms_time(philo->last_meal) > philo->args->time_to_die)
-		return (1);
-	return (0);
-}
-
-void	*monitor_philo(t_philo *vphilo)
-{
-	int			last_meal_informed;
-	t_philo		*philo;
-	pthread_t	detach;
-
-	philo = (t_philo *)vphilo;
-	last_meal_informed = 0;
-	philo->last_meal = get_ms_time(0);
-	while (1)
-	{
-		if (philo->times_ate >= philo->args->times_to_eat
-			&& !last_meal_informed)
-		{
-			sem_post(philo->args->allate);
-			last_meal_informed++;
-		}
-		if (check_philo_died(philo))
-		{
-			pthread_create(&detach, NULL, seppuku, NULL);
-			announce_state(philo, "died", 1);
-			sem_post(philo->args->philo_died);
-		}
-		usleep(100);
-	}
-	return (NULL);
 }
