@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:35:49 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/15 19:29:13 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/15 20:15:38 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	gs_simulation_state(t_args *args, int setdone)
 
 int	check_philo_died(t_philo *philo)
 {
-	if (get_ms_time(philo_mealtimer(philo, 0, 0)) > philo->args->time_to_die)
+	if (get_ms_time(philo_mealtimer(philo, 0, 0)) >= philo->args->time_to_die)
 		return (1);
 	return (0);
 }
