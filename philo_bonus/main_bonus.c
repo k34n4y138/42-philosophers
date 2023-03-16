@@ -6,7 +6,7 @@
 /*   By: zmoumen <zmoumen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 17:50:17 by zmoumen           #+#    #+#             */
-/*   Updated: 2023/03/15 18:17:52 by zmoumen          ###   ########.fr       */
+/*   Updated: 2023/03/16 14:58:41 by zmoumen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	initargs(char *av[], t_args *pack, int ac)
 	pack->time_to_eat = ft_atoi(av[3]);
 	pack->time_to_sleep = ft_atoi(av[4]);
 	pack->times_to_eat = 2147483647;
-	(ac == 6 && (pack->times_to_eat = ft_atoi(av[5])));
+	if (ac == 6)
+		pack->times_to_eat = ft_atoi(av[5]);
 	if (pack->num_of_philos < 1 || pack->num_of_philos > MAXPHILOS
 		|| pack->time_to_die < 1 || pack->time_to_eat < 1
 		|| pack->time_to_sleep < 1 || pack->times_to_eat < 1)
